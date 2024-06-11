@@ -1,0 +1,111 @@
+/*
+
+----->2) Numeric Fuctions: (ROUND(), SQRT(), MOD() )
+
+Q10.
+Change all the payments amount to 1/4th of the original paymnet.
+These new payment_amount should have 2 digits after the decimal point
+Display the 2 new calculations in separate columns.
+
+*/
+
+SELECT amount,
+        (amount*1/4) as "New Amount",
+        ROUND ((amount*1/4), 2) AS "ROUNDED"
+FROM payments;
+
+
+/*
+
+----->3) Date Function: (TO_DATE(), MONTHS_BETWEEN(), ADD_MONTHS(), NEXT_DAY(), SYSDATE, EXTRACT())
+
+Q11.
+a) DUAL Table
+b)How many month elapes beween 01st Jan, 2023 to  15th Sept, 2023?
+c)In Which months were each of the payments made in?
+
+*/
+
+--11
+SELECT (237/456)*11+2
+    FROM DUAL ;
+
+SELECT MONTHS_BETWEEN(
+        TO_DATE('15-09-2023', 'DD-MM-YYYY'),
+        TO_DATE('01-01-2023', 'DD-MM-YYYY')) AS "NUMBER OF MONTHS"
+    FROM DUAL;
+    
+SELECT ROUND( MONTHS_BETWEEN(
+        TO_DATE('15-09-2023', 'DD-MM-YYYY'),
+        TO_DATE('01-01-2023', 'DD-MM-YYYY'))) AS "ROUND"
+    FROM DUAL;
+    
+SELECT EXTRACT(month FROM PAYMENTDATE) AS "Month"
+FROM PAYMENTS;
+
+
+SELECT EXTRACT(month FROM PAYMENTDATE) AS "Month"
+FROM PAYMENTS
+WHERE EXTRACT(month FROM PAYMENTDATE)= 12;
+
+--DISPLAY THE MONTH WITHIN CHRISTMAS DAY OF 2023:
+SELECT EXTRACT(month FROM to_date('25-12-2023', 'dd-mm-yyyy')) AS "MONTH"
+FROM DUAL;
+
+--Extract other componets of the paymentdate, as well:
+SELECT EXTRACT(MONTH FROM PAYMENTDATE) AS "Month",
+        EXTRACT(DAY FROM PAYMENTDATE) AS "DAY",
+        EXTRACT(YEAR FROM PAYMENTDATE) AS "YEAR"
+FROM PAYMENTS;
+
+
+--12 Display Todays Date
+SELECT SYSDATE AS "Today's Date"
+FROM DUAL;
+
+--Display Todays date but months in string
+SELECT TO_CHAR(SYSDATE, 'DDth MONTH YYYY') AS formatted_date
+FROM dual;
+
+/*
+Q14. FOR ALL THE CHEQUES, DISPLAY THE CHEQUES_NUMBER, PAYMENTS_DATE AND PAYMENT_MONTHS
+*/
+SELECT CHECKNUMBER AS "CHEQUES",
+        PAYMENTDATE AS "PAYMENTS_DATE",
+        INITCAP( TO_CHAR(PAYMENTDATE, 'MONTH')) AS "MONTH_NAME"
+FROM PAYMENTS;
+
+
+--FIND ALL EMPLOYEES WITH THE FIRSTNAME 'leslie'
+SELECT * FROM EMPLOYEES
+WHERE LOWER(FIRSTNAME) = 'leslie';
+
+/*
+Q14. DISPLAY THOSE EMPLOYEES WHOSE FIRSTNAME ENDS WITH 'arry'.
+*/
+SELECT * FROM EMPLOYEES
+WHERE UPPER(FIRSTNAME) LIKE '%ARRY';
+
+/*
+Q15. DISPLAY THOES EMPLOYEES WHHOSE FIRSTNAME CONATAINS TWO 'e'S IN ANYWHERE IN THE FIRSTNAME
+*/
+SELECT *
+FROM EMPLOYEES
+WHERE UPPER(FIRSTNAME) LIKE '%E%E%';
+
+/*
+Q16. FIND ALL THE ORDER MADE IN THE 1ST HALF OF THE 2004
+*/
+SELECT ORDERDATE
+FROM ORDERS
+WHERE ORDERDATE BETWEEN TO_DATE('01-01-2004', 'DD-MM-YYYY') AND TO_DATE('01-06-2004', 'DD-MM-YYYY')
+ORDER BY ORDERDATE;
+
+--Just The Different Way To write the query for 16
+
+SELECT ORDERDATE
+FROM ORDERS
+WHERE ORDERDATE >= TO_DATE('01-01-2004', 'DD-MM-YYYY')
+  AND ORDERDATE <= TO_DATE('01-06-2004', 'DD-MM-YYYY')
+ORDER BY ORDERDATE;
+
